@@ -1,7 +1,7 @@
 import { over, Client } from 'stompjs';
 import SockJS from 'sockjs-client';
 import * as Styled from './ChatRoom.styled';
-import { Avatar, Button, Layout, List, Skeleton } from 'antd';
+import { Avatar, Button, Layout, List } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { Content } from 'antd/es/layout/layout';
 import TextArea from 'antd/es/input/TextArea';
@@ -44,7 +44,6 @@ const ChatRoom: React.FC = () => {
   useDocumentTitle("Chat Room | MyTutor");
   const [account, setAccount] = useState<Map<number, Account>>(new Map());
   const { user } = useAuth();
-  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
   const { id, fullName, avatar } = location.state || {};
 
@@ -70,7 +69,6 @@ const ChatRoom: React.FC = () => {
 
   useEffect(() => {
     if (userData.connected) {
-      setLoading(false);
       fetchMessages();
     }
   }, [userData.connected]);
@@ -269,95 +267,90 @@ const ChatRoom: React.FC = () => {
   };
   return (
     <Layout>
-      <>
-        <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-          <Skeleton style={{ padding: '0 50px', width: '30%', backgroundColor: '#ffff' }} loading={loading} active>
-            <Sider width={350} style={{ background: '#fff', height: '600px', padding: '0 20px', overflowY: 'auto' }}>
-              <List
-                itemLayout="horizontal"
-                dataSource={[...privateChats.keys()]}
-                renderItem={(id) => {
-                  const isCurrentTab = tab === id.toString();
-                  return (
-                    <List.Item onClick={() => {
-                      setTab(id.toString());
-                      if (unreadTabs.has(id)) {
-                        setUnreadTabs(prev => {
-                          const newUnreadTabs = new Set(prev);
-                          newUnreadTabs.delete(id);
-                          return newUnreadTabs;
-                        });
+      {userData.connected ? (
+        <>
+          <Sider width={350} style={{ background: '#fff', height: '600px', padding: '0 20px', overflowY: 'auto' }}>
+            <List
+              itemLayout="horizontal"
+              dataSource={[...privateChats.keys()]}
+              renderItem={(id) => {
+                const isCurrentTab = tab === id.toString();
+                return (
+                  <List.Item onClick={() => {
+                    setTab(id.toString());
+                    if (unreadTabs.has(id)) {
+                      setUnreadTabs(prev => {
+                        const newUnreadTabs = new Set(prev);
+                        newUnreadTabs.delete(id);
+                        return newUnreadTabs;
+                      });
+                    }
+                  }} style={{
+                    cursor: 'pointer',
+                    padding: '20px', borderRadius: '25px',
+                    backgroundColor: isCurrentTab ? '#F4D1F3' : ''
+                  }}>
+                    <Styled.CustomListItemMeta
+                      avatar={<Avatar size={50} src={account.get(id)?.avatarUrl} />}
+                      title={truncateText(account.get(id)?.fullName) || 'Unknown'}
+                      unread={unreadTabs.has(id)}
+                      description={
+                        <span className="message-content">
+                          {truncateText(getLatestMessage(privateChats.get(id)))}
+                        </span>
                       }
-                    }} style={{
-                      cursor: 'pointer',
-                      padding: '20px', borderRadius: '25px',
-                      backgroundColor: isCurrentTab ? '#F4D1F3' : ''
-                    }}>
-                      <Styled.CustomListItemMeta
-                        avatar={<Avatar size={50} src={account.get(id)?.avatarUrl} />}
-                        title={truncateText(account.get(id)?.fullName) || 'Unknown'}
-                        unread={unreadTabs.has(id)}
-                        description={
-                          <span className="message-content">
-                            {truncateText(getLatestMessage(privateChats.get(id)))}
-                          </span>
-                        }
-                        as={List.Item.Meta}
-                      />
-                    </List.Item>
+                      as={List.Item.Meta}
+                    />
+                  </List.Item>
+                )
+              }}
+            />
+          </Sider>
+
+          <Content style={{ minHeight: 280 }}>
+            <Styled.ChatBox>
+              <Styled.ChatMessages ref={chatMessagesRef}>
+                {(privateChats.get(parseInt(tab)) ?? []).map((chat, index) => {
+                  const isSelf = chat.senderId === user?.id;
+                  const messageTime = chat.createdAt ? format(parseDate(chat.createdAt), 'HH:mm') : 'Invalid Date';
+
+                  return (
+                    <Styled.Message self={isSelf} key={index}>
+                      {!isSelf && <Avatar size={45} src={chat.senderAvatarUrl} />}
+                      <Styled.MessageData self={isSelf}>
+                        <Styled.MessageTime self={isSelf}>
+                          {messageTime}
+                        </Styled.MessageTime>
+                        <Styled.MessageContent self={isSelf}>{chat.message}</Styled.MessageContent>
+                      </Styled.MessageData>
+                    </Styled.Message>
                   )
-                }}
-              />
-            </Sider>
-          </Skeleton>
+                })}
+              </Styled.ChatMessages>
+              <Styled.SendMessage>
 
-          <Skeleton style={{ padding: '0 50px', width: '70%', backgroundColor: '#fff' }} loading={loading} active>
-            <Content style={{ minHeight: 280 }}>
-              <Styled.ChatBox>
-                <Styled.ChatMessages ref={chatMessagesRef}>
-                  {(privateChats.get(parseInt(tab)) ?? []).map((chat, index) => {
-                    const isSelf = chat.senderId === user?.id;
-                    const messageTime = chat.createdAt ? format(parseDate(chat.createdAt), 'HH:mm') : 'Invalid Date';
+                <TextArea
+                  required
+                  maxLength={100}
+                  rows={2}
+                  value={userData.message}
+                  style={{ height: 120, resize: 'none', margin: '0 10px' }}
+                  onChange={handleMessage}
+                  placeholder="Your message..."
+                />
+                <Button
+                  type="primary"
+                  shape="circle"
+                  disabled={!userData.message.trim()}
+                  icon={<SendOutlined />}
+                  onClick={sendPrivateValue}
+                />
 
-                    return (
-                      <Styled.Message self={isSelf} key={index}>
-                        {!isSelf && <Avatar size={45} src={chat.senderAvatarUrl} />}
-                        <Styled.MessageData self={isSelf}>
-                          <Styled.MessageTime self={isSelf}>
-                            {messageTime}
-                          </Styled.MessageTime>
-                          <Styled.MessageContent self={isSelf}>{chat.message}</Styled.MessageContent>
-                        </Styled.MessageData>
-                      </Styled.Message>
-                    )
-                  })}
-                </Styled.ChatMessages>
-                <Styled.SendMessage>
-
-                  <TextArea
-                    required
-                    maxLength={100}
-                    rows={2}
-                    value={userData.message}
-                    style={{ height: 120, resize: 'none', margin: '0 10px' }}
-                    onChange={handleMessage}
-                    placeholder="Your message..."
-                  />
-                  <Button
-                    type="primary"
-                    shape="circle"
-                    disabled={!userData.message.trim()}
-                    icon={<SendOutlined />}
-                    onClick={sendPrivateValue}
-                  />
-
-                </Styled.SendMessage>
-              </Styled.ChatBox>
-            </Content>
-          </Skeleton>
-        </div>
-
-      </>
+              </Styled.SendMessage>
+            </Styled.ChatBox>
+          </Content>
+        </>
+      ) : null}
     </Layout>
   );
 };

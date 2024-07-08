@@ -1,32 +1,43 @@
 import { Menu } from 'antd';
+import { AppstoreOutlined, MailOutlined, HomeOutlined } from '@ant-design/icons';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import config from '../../config';
-import { TeamOutlined, UsergroupAddOutlined, ProjectOutlined } from '@ant-design/icons';
-import { LuLayoutDashboard } from "react-icons/lu";
 
 const MenuSider: React.FC = () => {
+  const location = useLocation();
 
   const items: MenuProps['items'] = [
     {
-      key: 'dashboard',
-      icon: <LuLayoutDashboard />,
+      key: 'muc-0',
+      icon: <MailOutlined />,
       label: <Link to={config.routes.admin.dashboard}>Dashboard</Link>,
     },
     {
+      key: 'muc-1',
+      icon: <AppstoreOutlined />,
+      label: 'Muc 1',
+      children: [
+        {
+          key: 'muc_1-1',
+          label: 'Muc 1-1',
+        },
+      ],
+    },
+    {
       key: config.routes.admin.manageModerator,
-      icon: <ProjectOutlined />,
-      label: <Link to={config.routes.admin.manageModerator}>Moderator</Link>,
+      icon: <HomeOutlined />,
+      label: <Link to={config.routes.admin.manageModerator}>Moderater</Link>,
     },
     {
       key: config.routes.admin.manageTutor,
-      icon: <TeamOutlined />,
+      icon: <HomeOutlined />,
       label: <Link to={config.routes.admin.manageTutor}>Tutor</Link>,
     },
     {
       key: config.routes.admin.manageStudent,
-      icon: <UsergroupAddOutlined />,
+      icon: <HomeOutlined />,
       label: <Link to={config.routes.admin.manageStudent}>Student</Link>,
     }
   ];
@@ -34,11 +45,10 @@ const MenuSider: React.FC = () => {
   return (
     <div>
       <Menu
-        style={{ border: 'none' }}
         items={items}
         mode="inline"
-        defaultOpenKeys={['dashboard']}
-        defaultSelectedKeys={['dashboard']}
+        defaultOpenKeys={['muc-0']}
+        defaultSelectedKeys={[location.pathname]}
       />
     </div>
   );

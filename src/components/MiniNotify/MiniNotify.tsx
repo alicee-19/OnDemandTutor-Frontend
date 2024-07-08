@@ -1,32 +1,40 @@
 import React from 'react';
-import { Dropdown, MenuProps, Space, Avatar, Typography } from 'antd';
-import { EditOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Dropdown, Button, MenuProps } from 'antd';
+import { BellOutlined } from '@ant-design/icons';
 import * as Styled from './MiniNotify.syled';
-import { UserType } from '../../hooks/useAuth';
-import cookieUtils from '../../utils/cookieUtils';
-import config from '../../config';
-import { Link } from 'react-router-dom';
-const { Text } = Typography;
-
-type MiniNotifyProps = {
-  user: UserType | undefined;
-};
 
 const items: MenuProps['items'] = [
   {
-    key: 'logout',
+    key: '1',
     label: (
-      <Link to={config.routes.public.login} onClick={() => cookieUtils.clear()}>
-        <Space >
-          <LogoutOutlined />
-          Logout
-        </Space>
-      </Link>
+      <Styled.Item>
+        <Styled.ItemIcon>
+          <BellOutlined />
+        </Styled.ItemIcon>
+        <Styled.ItemContent>
+          <Styled.ItemTitle>ABC</Styled.ItemTitle>
+          <Styled.ItemTime>8 min</Styled.ItemTime>
+        </Styled.ItemContent>
+      </Styled.Item>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <Styled.Item>
+        <Styled.ItemIcon>
+          <BellOutlined />
+        </Styled.ItemIcon>
+        <Styled.ItemContent>
+          <Styled.ItemTitle>BCD</Styled.ItemTitle>
+          <Styled.ItemTime>8 min</Styled.ItemTime>
+        </Styled.ItemContent>
+      </Styled.Item>
     ),
   },
 ];
-const MiniNotify: React.FC<MiniNotifyProps> = ({ user }) => {
 
+const MiniNotify: React.FC = () => {
   return (
     <div>
       <Dropdown
@@ -36,30 +44,15 @@ const MiniNotify: React.FC<MiniNotifyProps> = ({ user }) => {
           <>
             <Styled.Dropdown>
               <Styled.Head>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar size={40} src={user?.avatarUrl} alt="avatar" />
-                  <div style={{ marginLeft: 10 }}>
-                    <Text strong>{user?.fullName}</Text>
-                    <br />
-                    <Text type="secondary">{user?.role}</Text>
-                  </div>
-                </div>
+                <span><BellOutlined /> Notification</span>
+                <Button type='link' size='small'>View All</Button>
               </Styled.Head>
-              <Styled.Body>
-                {menus}
-              </Styled.Body>
+              <Styled.Body>{menus}</Styled.Body>
             </Styled.Dropdown>
           </>
         )}
       >
-
-        <Space style={{ cursor: 'pointer' }}>
-          {user ? (
-            <Avatar size={40} src={user.avatarUrl} alt="avatar" />
-          ) : (
-            <Avatar size={40} icon={<UserOutlined />} />
-          )}
-        </Space>
+        <Button icon={<BellOutlined />}></Button>
       </Dropdown>
     </div>
   );

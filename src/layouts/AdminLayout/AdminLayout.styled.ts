@@ -5,7 +5,7 @@ import Sider from 'antd/es/layout/Sider';
 
 export const StyledLayout = styled(Layout)`
     & .ant-layout {
-        background-color: #fff;
+        background: #fff;
     }
 `;
 
@@ -16,8 +16,7 @@ export const Header = styled.header`
     border: 1px solid #ddd;
     position: sticky;
     top: 0;
-    left: 0;
-    z-index: 999;
+    z-index: 1;
 `;
 
 export const Logo = styled.div`
@@ -59,19 +58,20 @@ export const Main = styled(Layout)`
         margin-left: 80px;
     }
 `;
-const calculateHeight = () => `calc(100vh - 70px)`;
+
 export const StyledSider = styled(Sider)`
     position: fixed !important;
     top: 70px;
     left: 0;
     z-index: 1;
-    border-right: 1px solid #ddd;
-    height: ${calculateHeight()};
-    background: #fff !important;
+    height: calc(100vh);
 `;
 
 export const StyledContent = styled(Content)`
     padding: 20px;
     background: #fff;
+<<<<<<< HEAD
     min-height: 210vh;
+=======
+>>>>>>> parent of 9a8dfe5 (Merge remote-tracking branch 'upstream/dev' into dev)
 `;

@@ -15,13 +15,15 @@ const Toolbar = ({
 }: ToolbarProps) => {
     return (
         <Styled.ToolbarAvatarWrapper>
-            <Link to={config.routes.student.chatRoom}>
-                <IoChatboxEllipsesOutline
-                    size={28}
-                    color={theme.colors.primary}
-                    cursor="pointer"
-                />
-            </Link>
+            <Badge showZero count={0}>
+                <Link to={config.routes.student.chatRoom}>
+                    <IoChatboxEllipsesOutline
+                        size={28}
+                        color={theme.colors.primary}
+                        cursor="pointer"
+                    />
+                </Link>
+            </Badge>
 
             <Dropdown menu={{ items: menu }} arrow placement="bottomRight" trigger={['click']}>
                 <Space style={{ cursor: 'pointer' }}>

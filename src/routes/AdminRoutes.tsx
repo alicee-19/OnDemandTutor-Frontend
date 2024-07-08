@@ -5,14 +5,14 @@ import { Role } from "../utils/enums";
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import ManageTutor from "../pages/Admin/ManageTutor/ManageTutor";
-import ManageStudent from "../pages/Admin/ManageStudent/ManageStudent";
-import ManageModerator from "../pages/Admin/ManageModerator/ManageModerator";
+import SearchTutors from "../pages/SearchTutors";
 
 
 // Authorization
 const AdminRouter = () => {
     const { role } = useAuth();
-    return role === Role.ADMIN ? <AdminLayout /> : <Navigate to="/" />;
+    // return role === Role.ADMIN ? <AdminLayout /> : <Navigate to="/" />;
+    return <AdminLayout />;
 
 };
 
@@ -23,8 +23,8 @@ const AdminRoutes = {
     children: [
         { path: config.routes.admin.dashboard, element: <Dashboard /> },
         { path: config.routes.admin.manageTutor, element: <ManageTutor /> },
-        { path: config.routes.admin.manageModerator, element: <ManageModerator /> },
-        { path: config.routes.admin.manageStudent, element: <ManageStudent /> },
+        // { path: config.routes.admin.manageModerator, element: <Dashboard /> },
+        // { path: config.routes.admin.manageStudent, element: <Dashboard /> },
 
     ],
 };
