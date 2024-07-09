@@ -264,7 +264,7 @@ export const TutorEducationBachelor = styled.span`
 `;
 
 export const CheckSection = styled.section`
-    margin: 130px 0 40px;
+    margin: 72px 0 134px;
 `;
 
 export const CheckInner = styled.div`

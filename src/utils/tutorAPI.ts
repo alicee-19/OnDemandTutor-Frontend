@@ -4,6 +4,10 @@ export const getTutorList = () => {
     return get(`/api/tutors?pageNo=0&pageSize=3&sortBy=rating`);
 };
 
+export const getListTutor = () => {
+    return get(`/api/tutors`);
+};
+
 export const getTutorById = (tutorId: number) => {
     return get(`/api/tutors/${tutorId}`);
 };
@@ -11,11 +15,10 @@ export const getTutorById = (tutorId: number) => {
 export const getTutorReviews = (tutorId: number, pageNo: number, pageSize: number) => {
     return get(`/api/tutors/${tutorId}/reviews?pageNo=${pageNo}&pageSize=${pageSize}`);
 };
-export const getTutorEducation = (tutorId: number, isVerified: string) => {
+export const getTutorEducation = (tutorId: number, isVerified: boolean) => {
     return get(`/api/tutors/${tutorId}/educations?isVerified=${isVerified}`);
 };
-
-export const getTutorCertification = (tutorId: number, isVerified: string) => {
+export const getTutorCertification = (tutorId: number, isVerified: boolean) => {
     return get(`/api/tutors/${tutorId}/certificates?isVerified=${isVerified}`);
 };
 

@@ -5,7 +5,6 @@ import { InboxOutlined } from '@ant-design/icons';
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import { useEffect, useState } from "react";
 import Dragger from "antd/es/upload/Dragger";
-import { UploadChangeParam } from "antd/es/upload";
 
 const Form2 = ({
   diploma,
@@ -30,8 +29,8 @@ const Form2 = ({
     }
     return e?.fileList.length>0?[e.fileList[e.fileList.length - 1]]:[];
   };
-  const onChange = ({ fileList: newFileList }: UploadChangeParam<UploadFile>) => {
-    setFileList([newFileList[newFileList.length - 1]]);
+  const onChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList[newFileList.length - 1]);
   };
   const handleFinish = (values: any) => {
     onFinish({ ...values, fileList })
