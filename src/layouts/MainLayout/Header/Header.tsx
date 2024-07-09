@@ -58,8 +58,8 @@ const Header = ({ role, navbar, menu, avatarUrl, status }: HeaderProps) => {
         {
             // label: <Link to={config.routes.student.profile}>My Profile</Link>,
             // key: config.routes.student.profile,
-            label: <Link to={role === 'TUTOR' && status === 'ACTIVE' ? config.routes.tutor.profile : config.routes.student.profile}>Profile</Link>,
-            key: role === 'TUTOR' && status === 'ACTIVE' ? config.routes.tutor.profile : config.routes.student.profile,
+            label: <Link to={config.routes.student.profile}>Profile</Link>,
+            key: config.routes.student.profile,
         },
         // {
         //     label:role === 'TUTOR' && status === 'ACTIVE' ? <Link to={config.routes.tutor.profile}>Tutor Profile</Link>: <p hidden style={{height:`0`}}></p>,
@@ -91,13 +91,12 @@ const Header = ({ role, navbar, menu, avatarUrl, status }: HeaderProps) => {
     ];
 
     // Add "Tutoring Details" link if the role is "TUTOR"
-    // if (role === 'TUTOR' && status === 'ACTIVE') {
-    //     items.splice(1, 0, {
-    //         label: <Link to={config.routes.tutor.profile}>Tutor Profile</Link>,
-    //         key: config.routes.tutor.profile,
-    //     });
-    //     console.log(items)
-    // }
+    if (role === 'TUTOR' && status === 'ACTIVE') {
+        items.splice(1, 0, {
+            label: <Link to={config.routes.tutor.profile}>Tutoring Info</Link>,
+            key: config.routes.tutor.profile,
+        });
+    }
 
     useEffect(() => {
         window.addEventListener('scroll', transitionNavBar);
