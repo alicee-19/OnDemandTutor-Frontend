@@ -143,9 +143,6 @@ export const Button = styled.button`
     border-radius: 50px;
     background-color: #fff;
     font-size: 12px;
-    position: absolute;
-    top: 24px;
-    right: 10px;
     ${({ theme }) => theme.breakpoints.down('md')} {
         // width: 150px;
     }

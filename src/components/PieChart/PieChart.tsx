@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { getTutorCountBySubject } from '../../utils/statisticAPI';
 
 const PieChart = () => {
-  //fix piechart
   const [data, setData] = useState([]);
 
   useEffect(() => {

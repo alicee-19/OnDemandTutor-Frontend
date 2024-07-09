@@ -266,10 +266,3 @@ export enum AppointmentStatus {
     REFUNDED = 'REFUNDED',
     DONE = 'DONE',
 }
-export enum QuestionStatus {
-    UNSOLVED = 'UNSOLVED',
-    SOLVED = 'SOLVED',
-    PROCESSING = 'PROCESSING',
-    REJECTED = 'REJECTED'
-    // Add more statuses as needed
-}
